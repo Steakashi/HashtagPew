@@ -9,6 +9,7 @@
 	},
 	"dependencies": {
 		"socket.io": "~1.7",
-		"twitter": "~1.7"
+		"twitter": "~1.7",
+		"express": "~4.15"
 	}
 }
