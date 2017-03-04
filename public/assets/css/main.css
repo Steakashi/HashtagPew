@@ -1,5 +1,10 @@
+body {
+  font-family: "VT323", monospace; }
+
 .tweet {
-  width: 200px;
-  height: 200px; }
+  width: 300px;
+  height: 200px;
+  margin: 0 20px;
+  background-color: rgba(20, 20, 20, 0.8); }
 
 /*# sourceMappingURL=main.css.map */
