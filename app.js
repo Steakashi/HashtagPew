@@ -1,10 +1,10 @@
+// Initialize required modules
 var express = require('express'),  
     app     = express(),
     server  = app.listen(8080),
     io = require('socket.io').listen(server),
     fs = require('fs'),
     twitter = require('twitter');
-
 
 // Read the data from the authentification file
 var authFile = fs.readFileSync("app/config/auth.json");
@@ -22,17 +22,20 @@ var twittObject = new twitter({
 	access_token_secret: authParam.access_token_secret
 });
 
-
+// Setup public directory
+app.use(express.static(__dirname + '/public'));
+// Setup default routes
 app.use('/', require('./app/routes/default'));
 
+// Init socket.io event and twitter stream
+io.sockets.on('connection', function(socket) {
 
-// Stream tweets filtered by given hashtag
-var stream = twittObject.stream('statuses/filter', {track: hashtagParam.hashtag});
-stream.on('data', function(event) {
-  console.log(event && event.text);
+ 	twittObject.stream('statuses/filter', {'track': hashtagParam.hashtag},
+
+	function(stream) {
+		stream.on('data',function(data){
+		socket.emit('twitter',data);
+		});
+
+	});
 });
- 
-stream.on('error', function(error) {
-  throw error;
-}); 
-
