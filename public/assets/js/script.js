@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+	var limit = 3, count = 0;
     var container = document.getElementById('content'),
    		socket = io.connect('http://localhost:8080');
 
@@ -33,38 +34,51 @@ $(document).ready(function() {
                     
     socket.on('twitter', function(data) {
     	
-    	$('.tweets').prepend('<canvas id="'+data.id +'" class="tweet"></canvas>');
+    	if(count < limit){
 
-    	var canvas = document.getElementById( data.id );
-		var ctx = canvas.getContext("2d");
+    		$('#content').prepend('<canvas id="'+data.id +'" class="tweet"></canvas>');
 
-		//var padding = $(canvas).css('padding');
-		//padding = padding.substring( 0, padding.length - 2 );
+	    	var canvas = document.getElementById( data.id );
+			var ctx = canvas.getContext("2d");
 
-		var padding = 10;
+			//var padding = $(canvas).css('padding');
+			//padding = padding.substring( 0, padding.length - 2 );
 
-		ctx.fillStyle="rgba(20,20,20, .8)";
-		ctx.fillRect(0,0,canvas.offsetWidth, 48);
-			    	
-		ctx.font = "25px VT323";
-		ctx.fillStyle = "white";
-		ctx.textAlign = "start";
+			var padding = 10;
 
-		ctx.fillText( data.user.screen_name, 70, 30); 
-		
-		textWrapper(
-			data.text,
-			canvas.offsetWidth,
-			padding,
-			ctx);
+			ctx.fillStyle="rgba(20,20,20, .8)";
+			ctx.fillRect(0,0,canvas.offsetWidth, 48);
+				    	
+			ctx.font = "25px VT323";
+			ctx.fillStyle = "white";
+			ctx.textAlign = "start";
 
-		var img = new Image();
-		img.onload = function()
-		{
-		    ctx.drawImage(img, 0, 0, img.width, img.height);
-		};
-					
-	    img.src = data.user.profile_image_url;
+			ctx.fillText( data.user.screen_name, 70, 30); 
+			
+			textWrapper(
+				data.text,
+				canvas.offsetWidth,
+				padding,
+				ctx);
+
+			var img = new Image();
+			img.onload = function()
+			{
+			    ctx.drawImage(img, 0, 0, img.width, img.height);
+			};
+						
+		    img.src = data.user.profile_image_url;
+
+		    count++;
+
+		        $(canvas).on('click', function(){
+					canvas.remove();
+				});
+
+    	}
+    	
     });
 
+
 });
+
