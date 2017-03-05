@@ -2034,6 +2034,26 @@ ul.is-unstyled, ul.unstyled {
 body {
   font-family: "VT323", monospace; }
 
+header {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgba(20, 20, 20, 0.8);
+  color: white; }
+
+h1 {
+  display: inline; }
+
+#score_container {
+  display: inline;
+  font-size: 1.5em; }
+  #score_container p {
+    display: inline; }
+
+#content {
+  width: 100%; }
+
 .tweet {
   width: 300px;
   height: 200px;

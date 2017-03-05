@@ -1,8 +1,13 @@
 $(document).ready(function() {
 
-	var limit = 3, count = 0;
+	var limit = 10, count = 0;
     var container = document.getElementById('content'),
    		socket = io.connect('http://localhost:8080');
+   	var score = 0;
+   	var maxScore = localStorage.getItem("score");
+
+   	document.getElementById("max_score").innerHTML = maxScore;
+
 
    	function textWrapper(txt, width, margin, ctx){
 
@@ -72,7 +77,17 @@ $(document).ready(function() {
 		    count++;
 
 		        $(canvas).on('click', function(){
+
+					score ++;
+					if(score > maxScore){
+						localStorage["score"] = score;
+						document.getElementById("max_score").innerHTML = score;
+
+					}
+					document.getElementById("score").innerHTML = score;
+
 					canvas.remove();
+
 				});
 
     	}
