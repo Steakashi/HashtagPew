@@ -72,7 +72,7 @@ $(document).ready(function() {
    	 * @param {[type]} stage    [current stage object used]
    	 * @param {[type]} url      [picture link]
    	 */
-   	function addPicture(renderer, stage, url){
+   	function addPicture(renderer, stage, url, x=0, y=0){
 
    		loader
 		  .add(url)
@@ -80,7 +80,9 @@ $(document).ready(function() {
 
 		function setup() {
 
-		  var avatar = new Sprite(resources[url].texture);  
+		  var avatar = new Sprite(resources[url].texture); 
+		  avatar.position.x = x;
+		  avatar.position.y = y;
 		  stage.addChild(avatar);
 		  displayingEnabled = true;
 
@@ -107,26 +109,30 @@ $(document).ready(function() {
     		displayingEnabled = false;
 
 
-			// Load outline content
+    		// Get random position
+			var x = Math.floor(Math.random() * (windowWidth - width)),
+				y = Math.floor(Math.random() * (windowHeight - height - headerHeight - headerMargin - 1));
+
+
 			var outline = new Graphics();
 			outline.lineStyle(1, 0x333333, 1);
 			outline.beginFill(0xFFFFFF, .8);
-			outline.drawRect(0, 0, width-1, height-1);
+			outline.drawRect(x, y, width-1, height-1);
 			outline.interactive = true;
-			outline.hitArea = new Rectangle(0, 0, width-1, height-1);
+			outline.hitArea = new Rectangle(x, y, width-1, height-1);
 			outline.endFill();
 
 
 			// Load header
 			var rectangle = new Graphics();
 			rectangle.beginFill(0x333333);
-			rectangle.drawRect(0, 0, width, 48);
+			rectangle.drawRect(x, y, width, 48);
 			rectangle.endFill();
 
 
 			// Load profile name and tweet content
-			var tweetUserName = displayMessage(stage, data.user.screen_name, "VT323", "25px", "white", width, 60, 15);
-			var tweetContent = displayMessage(stage, data.text, "Anonymous Pro", "16px", "black", width - (padding * 2), padding, 	70);
+			var tweetUserName = displayMessage(stage, data.user.screen_name, "VT323", "25px", "white", width, x+60, y+15);
+			var tweetContent = displayMessage(stage, data.text, "Anonymous Pro", "16px", "black", width - (padding * 2), x+padding, y+70);
 
 
 			// Add all element to the stage
@@ -134,7 +140,7 @@ $(document).ready(function() {
 
 
 			// Add picture
-			addPicture(renderer, stage, data.user.profile_image_url);
+			addPicture(renderer, stage, data.user.profile_image_url, x, y);
 
 			count++;
 
