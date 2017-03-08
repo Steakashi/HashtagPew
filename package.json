@@ -1,15 +1,15 @@
 {
-	"name": "HashtagPew",
-	"version": "0.1.0",
-	"author": "Guilhem Compain <guilhem.compain@gmail.com",
-	"description": "Web application displaying tweets in real-time that can be destroyed by the user",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Steakashi/HashtagPew.git"
-	},
-	"dependencies": {
-		"socket.io": "~1.7",
-		"twitter": "~1.7",
-		"express": "~4.15"
-	}
+  "name": "HashtagPew",
+  "version": "0.1.0",
+  "author": "Guilhem Compain <guilhem.compain@gmail.com",
+  "description": "Web application displaying tweets in real-time that can be destroyed by the user",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Steakashi/HashtagPew.git"
+  },
+  "dependencies": {
+    "express": "~4.15",
+    "socket.io": "~1.7",
+    "twitter": "~1.7"
+  }
 }

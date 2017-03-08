@@ -2036,7 +2036,7 @@ body {
 
 header {
   width: 100%;
-  height: auto;
+  height: 140px;
   margin-bottom: 20px;
   padding: 10px;
   background-color: rgba(20, 20, 20, 0.8);
