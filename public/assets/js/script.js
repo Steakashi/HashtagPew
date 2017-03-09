@@ -41,6 +41,26 @@ $(document).ready(function() {
 	var stage = new Stage();
 
 
+    function explosion(eltList){
+
+    	for (var i = eltList.length - 1; i >= 0; i--){
+       		stage.removeChild(eltList[i]);
+    	}
+
+    	score ++;
+
+    	// Score handler
+		if(score > maxScore){
+			localStorage["score"] = score;
+			document.getElementById("max_score").innerHTML = score;
+
+		}
+		document.getElementById("score").innerHTML = score;
+
+    	count--;
+    }
+
+
     /**
      * [displayMessage : add text content on container]
      * @param  {[type]} stage     [container in which the text will appear]
@@ -66,31 +86,6 @@ $(document).ready(function() {
    	}
 
 
-   	/**
-   	 * [addPicture : Load and display picture]
-   	 * @param {[type]} renderer [current render view]
-   	 * @param {[type]} stage    [current stage object used]
-   	 * @param {[type]} url      [picture link]
-   	 */
-   	function addPicture(renderer, stage, url, x=0, y=0){
-
-   		loader
-		  .add(url)
-		  .load(setup);
-
-		function setup() {
-
-		  var avatar = new Sprite(resources[url].texture); 
-		  avatar.position.x = x;
-		  avatar.position.y = y;
-		  stage.addChild(avatar);
-		  displayingEnabled = true;
-
-		}
-
-   	}
-
-
     /**
      * [main function. Called each time a tweet is streamed. Display it on the view and init interaction]
      * @param  {[type]} data [tweet content]
@@ -108,12 +103,12 @@ $(document).ready(function() {
 
     		displayingEnabled = false;
 
-
     		// Get random position
 			var x = Math.floor(Math.random() * (windowWidth - width)),
 				y = Math.floor(Math.random() * (windowHeight - height - headerHeight - headerMargin - 1));
 
 
+			// Load outline content
 			var outline = new Graphics();
 			outline.lineStyle(1, 0x333333, 1);
 			outline.beginFill(0xFFFFFF, .8);
@@ -134,16 +129,31 @@ $(document).ready(function() {
 			var tweetUserName = displayMessage(stage, data.user.screen_name, "VT323", "25px", "white", width, x+60, y+15);
 			var tweetContent = displayMessage(stage, data.text, "Anonymous Pro", "16px", "black", width - (padding * 2), x+padding, y+70);
 
+			var eltList = [outline, rectangle, tweetUserName, tweetContent];
+			outline.click = function(ev) { explosion(eltList); }
+
+
+			// Add avatar on the top left
+	  		loader
+			  .add(data.user.profile_image_url)
+			  .load(setup);
+
+
+			function setup() {
+
+			  var avatar = new Sprite(resources[data.user.profile_image_url].texture);  
+			  avatar.position.x = x;
+			  avatar.position.y = y;
+			  displayingEnabled = true;
+			  stage.addChild(avatar);
+			  eltList.push(avatar);
+
+			}
 
 			// Add all element to the stage
 			stage.addChild(outline, rectangle, tweetUserName, tweetContent);
 
-
-			// Add picture
-			addPicture(renderer, stage, data.user.profile_image_url, x, y);
-
 			count++;
-
 
 			// Call update function to render view
 			update();
