@@ -18,8 +18,7 @@ $(document).ready(function() {
  		windowHeight = $(window).height();
 
    	// PIXI.js aliases
-   	var Container = PIXI.Container,
-   		autoDetectRenderer = PIXI.autoDetectRenderer,
+	var autoDetectRenderer = PIXI.autoDetectRenderer,
     	loader = PIXI.loader,
     	resources = PIXI.loader.resources,
     	Sprite = PIXI.Sprite,
@@ -28,8 +27,10 @@ $(document).ready(function() {
     	Stage = PIXI.Stage,
     	Rectangle = PIXI.Rectangle;
 
+    let d = new Dust(PIXI);
+
     document.getElementById("max_score").innerHTML = maxScore;
-	
+
 	// Create renderer
 	var renderer = autoDetectRenderer(windowWidth - 7, windowHeight - 7 - headerHeight - headerMargin, null, {transparent:true});
 	renderer.backgroundColor = 0xFFFFFF;
@@ -40,24 +41,92 @@ $(document).ready(function() {
 	// Create a container object called `stage` in which we will add the tweets
 	var stage = new Stage();
 
+	//Create the `ParticleContainer` and add it to the `stage`
+	let starContainer = new PIXI.ParticleContainer(
+	  15000,
+	  {alpha: true, scale: true, rotation: true, uvs: true}
+	);
+	stage.addChild(starContainer);
 
-    function explosion(eltList){
 
-    	for (var i = eltList.length - 1; i >= 0; i--){
-       		stage.removeChild(eltList[i]);
-    	}
+	// Call update function to render view
+	update();
 
-    	score ++;
+	/** 
+	 * [update : handle render and animation]
+	 */
+	function update(){
+	    requestAnimationFrame(update);
+	    renderer.render(stage);
+	    d.update();
+	}
 
-    	// Score handler
+
+	/**
+	 * [updateScore : update score display. If needed, also update maxScore and display changes]
+	 */
+	function updateScore(){
+
+		score ++;
+
 		if(score > maxScore){
-			localStorage["score"] = score;
+		
+			localStorage.score = score;
 			document.getElementById("max_score").innerHTML = score;
 
 		}
+
 		document.getElementById("score").innerHTML = score;
 
-    	count--;
+	}
+
+
+	/**
+	 * [removeObjectInStage : remove given objects in current stage]
+	 * @param  {[type]} eltList [ALl objects stored for a particular tweet]
+	 */
+	function removeObjectInStage(eltList){
+
+		 for (var i = eltList.length - 1; i >= 0; i--){
+       		stage.removeChild(eltList[i]);
+    	}
+
+	}
+
+
+	/**
+	 * [explosion description]
+	 * @param  {[type]} eltList [ALl objects stored for a particular tweet]
+	 * @param  {[type]} img     [image link]
+	 * @param  {[type]} x       [x position that correspond to the center of the tweet]
+	 * @param  {[type]} y       [y position that correspond to the center of the tweet]
+	 */
+    function explosion(eltList, img, x, y){
+
+		d.create(
+		  x,                                  //x start position
+		  y,                                  //y start position
+		  () => new PIXI.Sprite(                //Sprite function
+		    PIXI.utils.TextureCache[img]
+		  ),  
+		  stage,                                //Container for particles
+		  300,                                   //Number of particles
+		  0.4,                                  //Gravity
+		  true,                                 //Random spacing
+		  0, 6.28,                              //Min/max angle
+		  .5, 15,                               //Min/max size
+		  .2, 25,                                 //Min/max speed
+		  0.0005, 1,                          //Min/max scale speed 
+		  0.005, 0.03,                          //Min/max alpha speed
+		  0.05, 0.2                             //Min/max rotation speed
+		);
+
+    	removeObjectInStage(eltList);
+    	updateScore();
+
+
+		count--;
+
     }
 
 
@@ -92,14 +161,8 @@ $(document).ready(function() {
      */
     socket.on('twitter', function(data) {
 
-    	/** [update : handle render and animation] */
-		function update(){
-		    requestAnimationFrame(update);
-		    renderer.render(stage);
-		};
-	
 
-    	if(displayingEnabled == true && count < limit){
+    	if(displayingEnabled === true && count < limit){
 
     		displayingEnabled = false;
 
@@ -130,14 +193,13 @@ $(document).ready(function() {
 			var tweetContent = displayMessage(stage, data.text, "Anonymous Pro", "16px", "black", width - (padding * 2), x+padding, y+70);
 
 			var eltList = [outline, rectangle, tweetUserName, tweetContent];
-			outline.click = function(ev) { explosion(eltList); }
+			outline.click = function(ev) { explosion(eltList, data.user.profile_image_url, x+(width/2), y+(height/2)); };
 
 
 			// Add avatar on the top left
 	  		loader
 			  .add(data.user.profile_image_url)
 			  .load(setup);
-
 
 			function setup() {
 
@@ -154,9 +216,6 @@ $(document).ready(function() {
 			stage.addChild(outline, rectangle, tweetUserName, tweetContent);
 
 			count++;
-
-			// Call update function to render view
-			update();
 
     	}
     	
