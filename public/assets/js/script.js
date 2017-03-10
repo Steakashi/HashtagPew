@@ -3,6 +3,7 @@ $(document).ready(function() {
 	var limit = 10000, count = 0,
 		score = 0, maxScore = localStorage.getItem("score"),
 		displayingEnabled = true,
+		imgList = [];
     	socket = io.connect('http://localhost:8080');
 
     // Dimensions for tweets
@@ -33,9 +34,7 @@ $(document).ready(function() {
     document.getElementById("max_score").innerHTML = maxScore;
 
 	// Create renderer
-	//var renderer = autoDetectRenderer(windowWidth - 7, windowHeight - 7 - headerHeight - headerMargin, null, {transparent:true});
 	var renderer = PIXI.autoDetectRenderer(windowWidth - 7, windowHeight - 7 - headerHeight - headerMargin, {antialias: false, transparent: true, resolution: 1});
-	//renderer.backgroundColor = 0xFFFFFF;
 
 	// Add the canvas to the HTML document
 	document.getElementById("content").appendChild(renderer.view);
@@ -181,6 +180,20 @@ $(document).ready(function() {
 
    	}
 
+   	/**
+   	 * [checkIfImgExists : Check if given img has already been loaded]
+   	 * @param  {[type]} url [description]
+   	 * @return {[type]}     [true if image exists]
+   	 */
+   	function checkIfImgExists(url){
+
+   		for(var i=0; i<imgList.length; i++){
+   			if (url === imgList[i]) return true;
+   		}
+   		return false;
+
+   	}
+
 
     /**
      * [main function. Called each time a tweet is streamed. Display it on the view and init interaction]
@@ -190,6 +203,7 @@ $(document).ready(function() {
 
 
     	if(displayingEnabled === true && count < limit){
+
 
     		displayingEnabled = false;
 
@@ -222,12 +236,7 @@ $(document).ready(function() {
 			var eltList = [outline, rectangle, tweetUserName, tweetContent];
 			outline.click = function(ev) { explosion(eltList, data.user.profile_image_url, x+(width/2), y+(height/2)); };
 
-
-			// Add avatar on the top left
-	  		loader
-			  .add(data.user.profile_image_url)
-			  .load(setup);
-
+			// Load image and display it
 			function setup() {
 
 			  var avatar = new Sprite(resources[data.user.profile_image_url].texture);  
@@ -238,6 +247,19 @@ $(document).ready(function() {
 			  eltList.push(avatar);
 
 			}
+
+			if(!checkIfImgExists(data.user.profile_image_url)){
+				
+
+				// Add avatar on the top left
+		  		loader
+				  .add(data.user.profile_image_url)
+				  .load(setup);
+
+
+			}else displayingEnabled = true;	
+
+			imgList.push(data.user.profile_image_url);
 
 			// Add all element to the stage
 			stage.addChild(outline, rectangle, tweetUserName, tweetContent);

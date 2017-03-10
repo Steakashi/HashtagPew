@@ -3,10 +3,10 @@ Web application displaying tweets in real-time (from a given hashtag) that can b
 
 Try to get them all and to get the best score ever !
 
-# Requirements
+## Requirements
 To use HashtagPew, you will need to install [NodeJS](https://nodejs.org)
 
-# Installation
+## Installation
 **Clone the repository** or download it and extract it where you want.
 
 **Go to the project** root and install all modules from package.json
