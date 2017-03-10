@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	var limit = 10000, count = 0,
+	var limit = 100, count = 0,
 		score = 0, maxScore = localStorage.getItem("score"),
 		displayingEnabled = true,
 		imgList = [];
@@ -194,6 +194,10 @@ $(document).ready(function() {
 
    	}
 
+
+   	socket.on('authentification_problem', function() {
+   		console.log('PROBLEM');
+   	});
 
     /**
      * [main function. Called each time a tweet is streamed. Display it on the view and init interaction]
