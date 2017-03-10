@@ -29,6 +29,7 @@ $(document).ready(function() {
 
     let d = new Dust(PIXI);
 
+
     document.getElementById("max_score").innerHTML = maxScore;
 
 	// Create renderer
@@ -49,10 +50,33 @@ $(document).ready(function() {
 	);
 	stage.addChild(starContainer);
 
-
 	// Call update function to render view
 	update();
 
+	// Initialize audio
+	var audio = new Audio('/assets/audio/shooting_stars.mp3');
+	audio.play();
+	audio.loop = true;
+
+	var isPlaying = true;
+	audioButton = document.getElementById("audio_button");
+
+	// Click function on audio button
+	audioButton.addEventListener('click', function(){
+
+		if(isPlaying){
+			audio.pause();
+			audioButton.src = "/assets/img/speaker_false.svg";
+			isPlaying = false;
+
+		}else{
+			audio.play();
+			audioButton.src = "/assets/img/speaker_true.svg";
+			isPlaying = true;
+
+		}
+		
+	});
 
 
 	/** 

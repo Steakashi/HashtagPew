@@ -48,3 +48,11 @@ header{
     z-index:-1000; object-fit: cover;
 
 }	
+
+#audio_button{
+	display:block; float:left;
+	margin-top:35px; margin-left:60px;
+	width:40px;
+	opacity:.4	;
+	&:hover{ cursor:pointer; opacity:.7;}
+}
