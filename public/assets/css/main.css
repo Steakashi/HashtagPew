@@ -2031,8 +2031,14 @@ ul.is-unstyled, ul.unstyled {
 /* ==Own stylesheet              */
 /* ----------------------------- */
 /* Here should go your own CSS styles */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
 body {
-  font-family: "VT323", monospace; }
+  font-family: "VT323", monospace;
+  background-color: #282832; }
 
 header {
   width: 100%;
@@ -2042,14 +2048,27 @@ header {
   background-color: rgba(20, 20, 20, 0.8);
   color: white; }
 
-h1 {
-  display: inline; }
+#logo {
+  display: block;
+  float: left;
+  margin-top: 10px; }
 
 #score_container {
-  display: inline;
-  font-size: 1.5em; }
+  display: block;
+  float: right;
+  margin-right: 30px;
+  margin-top: 20px;
+  font-size: 1.5em;
+  text-align: right; }
   #score_container p {
     display: inline; }
+
+.current_score {
+  font-size: 1.4em; }
+
+.max_score {
+  opacity: .6;
+  margin-top: -5px; }
 
 #content {
   width: 100%; }
@@ -2061,5 +2080,14 @@ h1 {
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(20, 20, 20, 0.8);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
+
+#video {
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+  background: url("../img/bckgrnd.png") no-repeat;
+  background-size: cover;
+  z-index: -1000;
+  object-fit: cover; }
 
 /*# sourceMappingURL=main.css.map */

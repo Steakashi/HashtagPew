@@ -2,8 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>HashtagPew</title>
-	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<title>#Pew</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
@@ -13,28 +12,37 @@
 
 <body>  
 
+
+        <video poster="/assets/img/bckgrnd.png" id="video" playsinline autoplay muted loop>
+            <source src="/assets/video/space.mp4" type="video/mp4">
+        </video>
+
+
         <header id="header">
-            <h1>Test page </h1>
+
+            <img id="logo" src="/assets/img/logo.png" alt="#Pew">
+            <img id="audio_button" src="/assets/img/speaker_true.svg" alt="Audio on/off" title="Audio on/off">
             <div id="score_container">
                 <div class="current_score">
-                    <p>Score : </p>
-                    <span id="score">0</span>
+                    <p>Score :
+                    <span id="score">0</span></p>
                 </div>
                 <div class="max_score">
-                    <p>Best score : </p>
-                    <span id="max_score"></span>
+                    <p>Best score :
+                    <span id="max_score"></span></p>
                 </div>
             
             </div>
+
         </header>
 
 		<div id="content">
 		</div>
 
 
-        <script src="/socket.io/socket.io.js"></script>  
-        <script src="/assets/js/pixi.js"></script>
-        <script src="/assets/js/dust.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>  
+        <script type="text/javascript" src="/assets/js/pixi.js"></script>
+        <script type="text/javascript" src="/assets/js/dust.js"></script>
         <script type="text/javascript" src="/assets/js/script.js"></script>
 </body>
 </html>

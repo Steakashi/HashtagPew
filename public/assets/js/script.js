@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	var limit = 16, count = 0,
+	var limit = 10000, count = 0,
 		score = 0, maxScore = localStorage.getItem("score"),
 		displayingEnabled = true,
     	socket = io.connect('http://localhost:8080');
@@ -32,8 +32,9 @@ $(document).ready(function() {
     document.getElementById("max_score").innerHTML = maxScore;
 
 	// Create renderer
-	var renderer = autoDetectRenderer(windowWidth - 7, windowHeight - 7 - headerHeight - headerMargin, null, {transparent:true});
-	renderer.backgroundColor = 0xFFFFFF;
+	//var renderer = autoDetectRenderer(windowWidth - 7, windowHeight - 7 - headerHeight - headerMargin, null, {transparent:true});
+	var renderer = PIXI.autoDetectRenderer(windowWidth - 7, windowHeight - 7 - headerHeight - headerMargin, {antialias: false, transparent: true, resolution: 1});
+	//renderer.backgroundColor = 0xFFFFFF;
 
 	// Add the canvas to the HTML document
 	document.getElementById("content").appendChild(renderer.view);
@@ -51,6 +52,8 @@ $(document).ready(function() {
 
 	// Call update function to render view
 	update();
+
+
 
 	/** 
 	 * [update : handle render and animation]
@@ -88,7 +91,7 @@ $(document).ready(function() {
 	function removeObjectInStage(eltList){
 
 		 for (var i = eltList.length - 1; i >= 0; i--){
-       		stage.removeChild(eltList[i]);
+       		stage.removeChild(eltList[i])
     	}
 
 	}

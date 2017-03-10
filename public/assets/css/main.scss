@@ -4,8 +4,12 @@ $font8bit: 'VT323', monospace;
 $black : rgba(20,20,20, .8);
 $white: rgba(255,255,255, .9);
 
+html, body{
+	width:100%; height:100%; overflow:hidden;
+}
+
 body{
-	font-family: $font8bit;
+	font-family: $font8bit; background-color:rgb(40,40,50);	
 }
 
 header{
@@ -14,10 +18,19 @@ header{
 	background-color: $black; color:white;
 }
 
-h1{ display:inline;}
-#score_container{ display:inline; font-size:1.5em; 
+#logo{
+	display:block; float:left;
+	margin-top:10px;
+}
+
+#score_container{ display:block; float:right; 
+				  margin-right:30px; margin-top:20px;
+				  font-size:1.5em; text-align:right;
 			   p{ display:inline; }}
 			   
+.current_score{ font-size:1.4em; }
+.max_score{ opacity:.6; margin-top:-5px; }
+
 #content{
 	width:100%;
 }
@@ -27,3 +40,11 @@ h1{ display:inline;}
 	margin:5px;
 	background-color:$white; border: 1px solid $black; box-shadow: 0 0 10px rgba(0,0,0,.5);
 }
+
+#video {
+
+    position: absolute; min-height:100%; min-width:100%;
+    background: url('../img/bckgrnd.png') no-repeat; background-size: cover;
+    z-index:-1000; object-fit: cover;
+
+}	
